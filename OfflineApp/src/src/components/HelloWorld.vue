@@ -10,7 +10,9 @@ export default {
   mounted() {
 		$('#content').append($("<ul></ul>"));
 		$.each(localStorage, function(key, value){
-			$('#content ul').append($("<li>"+key+"</li>"));
+			if(/[0-9]+_[0-9]+/.test(key)) {
+				$('#content ul').append($("<li>"+key+"</li>"));
+			}
 		});
   }
 }
