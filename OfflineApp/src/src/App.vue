@@ -3,28 +3,54 @@ import HelloWorld from './components/HelloWorld.vue'
 </script>
 
 <template>
-  <div>
-    <a href="https://vitejs.dev" target="_blank">
-      <img src="/vite.svg" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://vuejs.org/" target="_blank">
-      <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
-    </a>
+  <div class="navbarContainer">
+		<div class="navbar">
+			<div id="logo"><img src="https://demo.ideesculture.fr/gestion/themes/default/graphics/logos/menu_logo.png" /></div>
+			<div id="items">OFFLINE</div>
+			<div id="searchBar"><input type="text">🔎</div>
+		</div>
   </div>
   <HelloWorld msg="Vite + Vue" />
 </template>
 
-<style scoped>
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
+<style lang="scss" scoped>
+@font-face {font-family: 'DIN-Regular';src: url('fonts/28EC2C_0_0.eot');src: url('fonts/28EC2C_0_0.eot?#iefix') format('embedded-opentype'),url('fonts/28EC2C_0_0.woff') format('woff'),url('fonts/28EC2C_0_0.ttf') format('truetype');}
+.navbar {
+	text-align: right;
+	max-width: 1200px;
+	margin:auto;
+	div {
+		display: inline-block;
+		font-family: 'DIN-Regular';
+	}
 }
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
+
+#logo {
+	float:left;
+	margin-top:6px;
+	height:45px;
+	img {
+		height:45px;
+	}
 }
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
+#searchBar {
+	width:174px;
+	border:1px solid #ccc;
+	border-radius: 3px;
+	padding:4px 10px;
+	margin-top:12px;
+	margin-right:10px; 
+	INPUT {
+		border:none;
+	}
+}
+
+#items {
+	padding:10px 10px;
+}
+.navbarContainer {
+	box-shadow: 0 0 5px #888;
+	height:58px;
+	clear:both;
 }
 </style>
