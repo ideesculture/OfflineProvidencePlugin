@@ -29,3 +29,7 @@ To build offlineApp, you need to cd inside OfflineApp/src :
 npm run build
 npm run copy
 ```
+
+## Dev notes
+
+22/03/2023 : https://demo.ideesculture.fr/gestion/index.php/OfflineProvidence/Store/Populate/campagne_id/37 to test
