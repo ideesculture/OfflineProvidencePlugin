@@ -14,7 +14,7 @@ import HelloWorld from './components/HelloWorld.vue'
 </template>
 
 <style lang="scss" scoped>
-@font-face {font-family: 'DIN-Regular';src: url('fonts/28EC2C_0_0.eot');src: url('fonts/28EC2C_0_0.eot?#iefix') format('embedded-opentype'),url('fonts/28EC2C_0_0.woff') format('woff'),url('fonts/28EC2C_0_0.ttf') format('truetype');}
+@font-face {font-family: 'DIN-Regular';src: url('./assets/fonts/28EC2C_0_0.eot');src: url('./assets/fonts/28EC2C_0_0.eot?#iefix') format('embedded-opentype'),url('./assets/fonts/28EC2C_0_0.woff') format('woff'),url('./assets/fonts/28EC2C_0_0.ttf') format('truetype');}
 .navbar {
 	text-align: right;
 	max-width: 1200px;
