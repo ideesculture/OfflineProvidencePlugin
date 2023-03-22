@@ -9,7 +9,7 @@
 	<div id="onlineW">🟢 en ligne</div>
 	<div id="offlineW" style="display:none;">
 		<p>🔴 Vous êtes en mode hors connexion.</p>
-		<p><button>Saisie hors connexion</button></p>
+		<p><a href="/offline" target="_blank"><button>Saisie hors connexion</button></a></p>
 	</div>
 	<script>
 		window.onoffline = function() {

@@ -6,6 +6,13 @@
 
 ### Install widget
 
+To install the widget (green/red dot and button to open /offline link) :
+
+```
+cd app/widgets
+ln -s ../plugins/OfflineProvidence/OfflineProvidenceWidget offline
+```
+
 ### Deploy offline web app
 
 ## Developer instructions
