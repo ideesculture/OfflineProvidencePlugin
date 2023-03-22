@@ -1,16 +1,20 @@
 <script setup>
-import HelloWorld from './components/HelloWorld.vue'
+import List from './components/List.vue'
 </script>
 
 <template>
   <div class="navbarContainer">
 		<div class="navbar">
 			<div id="logo"><img src="https://demo.ideesculture.fr/gestion/themes/default/graphics/logos/menu_logo.png" /></div>
-			<div id="items">OFFLINE</div>
+			<div id="items">
+				<router-link class="routerlink" to="/offline/">OFFLINE</router-link>
+				<router-link class="routerlink" to="/offline/testload">TESTLOAD</router-link>
+			</div>
 			<div id="searchBar"><input type="text">🔎</div>
 		</div>
+		<router-view/>
   </div>
-  <HelloWorld msg="Vite + Vue" />
+	
 </template>
 
 <style lang="scss" scoped>
@@ -19,9 +23,14 @@ import HelloWorld from './components/HelloWorld.vue'
 	text-align: right;
 	max-width: 1200px;
 	margin:auto;
+	height: 58px;
 	div {
 		display: inline-block;
 		font-family: 'DIN-Regular';
+		.routerlink {
+			color:black;
+			padding:0 10px;
+		}
 	}
 }
 

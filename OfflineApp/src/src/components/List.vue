@@ -1,17 +1,18 @@
 <template>
-  <div id="content">Content</div>
+  <div id="content"></div>
 </template>
 
 <script>
 import { ref } from 'vue'
 import $ from 'jquery'
+import useLocalStorage from '../useLocalStorage'
 
 export default {
   mounted() {
 		$('#content').append($("<ul></ul>"));
 		$.each(localStorage, function(key, value){
 			if(/[0-9]+_[0-9]+/.test(key)) {
-				$('#content ul').append($("<li>"+key+"</li>"));
+				$('#content ul').append($("<a href='/offline/edit/"+key+"'><li>"+key+"</li></a>"));
 			}
 		});
   }
