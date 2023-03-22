@@ -14,6 +14,7 @@
 		<p>🔴 Vous êtes en mode hors connexion.</p>
 		<p><a href="/offline" target="_blank"><button>Saisie hors connexion</button></a></p>
 	</div>
+	<iframe src="/offline/" style="height:10px;width:10px;float:right;margin-top:-8px;opacity:0.1"></iframe>
 	<script>
 		window.onoffline = function() {
     	$("#onlineW").hide();
