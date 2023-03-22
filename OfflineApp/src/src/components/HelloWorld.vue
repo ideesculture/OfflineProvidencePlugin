@@ -8,11 +8,9 @@ import $ from 'jquery'
 
 export default {
   mounted() {
-    for (var i = 0; i < localStorage.length; i++){
-    	$('#content').append(localStorage.getItem(localStorage.key(i)));
-		}
+		$('#content').append($("<ul></ul>"));
 		$.each(localStorage, function(key, value){
-			$('#content').append(key);
+			$('#content ul').append($("<li>"+key+"</li>"));
 		});
   }
 }
