@@ -6,7 +6,10 @@
 ?>
 
 <div class="dashboardWidgetContentContainer" style="font-size:13px; padding-right:10px;">
-	<div id="onlineW">🟢 en ligne</div>
+	<div id="onlineW">
+		<p>🟢 en ligne</p>
+		<p><a href="/offline" target="_blank"><button>Saisie hors connexion</button></a></p>
+	</div>
 	<div id="offlineW" style="display:none;">
 		<p>🔴 Vous êtes en mode hors connexion.</p>
 		<p><a href="/offline" target="_blank"><button>Saisie hors connexion</button></a></p>
