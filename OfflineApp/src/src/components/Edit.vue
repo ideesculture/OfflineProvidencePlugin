@@ -4,19 +4,28 @@
 		<textarea v-model="name">
 			
 		</textarea>
-
+		<div id="additions" v-html="additions"></div>
+		<div id="modifications" v-html="modifications"></div>
+		<div id="deletions" v-html="deletions"></div>
+		<!-- <div id="diffs" v-html="diffs"></div> -->
 	</div>
 </template>
 
 <script>
 import { ref } from 'vue'
 //import $ from 'jquery'
+import { diff, addedDiff, deletedDiff, updatedDiff, detailedDiff } from 'deep-object-diff';
+
 
 export default {
 	data() {
 		return {
 			name : "",
-			id : this.$route.params.id
+			id : this.$route.params.id,
+			additions: "",
+			deletions: "",
+			modifications: "",
+			diffs: ""
 		}
 	},
   mounted() {
@@ -29,8 +38,21 @@ export default {
   watch: {
     name(newName) {
 			let thisname = this.$route.params.id;
-      localStorage[thisname] = newName;
+      //localStorage[thisname] = newName;
+			this.diffs = JSON.stringify(diff(JSON.parse(newName), JSON.parse(localStorage[thisname])));
+			this.additions = JSON.stringify(addedDiff(JSON.parse(newName), JSON.parse(localStorage[thisname])));
+			this.modifications = JSON.stringify(updatedDiff(JSON.parse(newName), JSON.parse(localStorage[thisname])));
+			this.deletions = JSON.stringify(deletedDiff(JSON.parse(newName), JSON.parse(localStorage[thisname])));
+
     }
+  },
+	methods: {
+    submit(_e) {
+      alert(JSON.stringify(this.model));
+    },
+    reset() {
+      this.$refs.JsonEditor.reset();
+    },
   }
 }
 
@@ -46,7 +68,16 @@ const count = ref(0)
 	padding:8px;
 	textarea {
 		width:calc(100% - 28px);
-		min-height:1000px;
+		min-height:300px;
 	}
+}
+#additions {
+	background:lightgreen;
+}
+#modifications {
+	background: lightblue;
+}
+#deletions {
+	background: red;
 }
 </style>
