@@ -15,8 +15,6 @@
 import { ref } from 'vue'
 //import $ from 'jquery'
 import { diff, addedDiff, deletedDiff, updatedDiff, detailedDiff } from 'deep-object-diff';
-import { JsonForms, JsonFormsChangeEvent } from "@jsonforms/vue";
-
 
 export default {
 	data() {

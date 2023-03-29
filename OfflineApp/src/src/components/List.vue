@@ -12,7 +12,20 @@ export default {
 		$('#content').append($("<ul></ul>"));
 		$.each(localStorage, function(key, value){
 			if(/[0-9]+_[0-9]+/.test(key)) {
-				$('#content ul').append($("<a href='/offline/edit/"+key+"'><li>"+key+"</li></a>"));
+				value = JSON.parse(value);
+				let title=key;
+				if(value.preferred_labels) {
+					title += " "+value.preferred_labels.fr_FR[0].name;
+				}				
+				if(value.idno) {
+					if(typeof value.idno === 'string') {
+						title += " ["+value.idno+"]";
+					} else if(typeof value.idno.value === 'string') {
+						title += " ["+value.idno.value+"]";
+					}
+				}
+				$('#content ul').append($("<a href='/offline/edit/"+key+"'><li>"+title+"</li></a>"));
+				
 			}
 		});
   }
