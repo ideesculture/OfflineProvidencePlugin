@@ -7,7 +7,7 @@
 		<div id="additions" v-html="additions"></div>
 		<div id="modifications" v-html="modifications"></div>
 		<div id="deletions" v-html="deletions"></div>
-		<!-- <div id="diffs" v-html="diffs"></div> -->
+		<div id="diffs" v-html="diffs"></div>
 	</div>
 </template>
 
@@ -15,6 +15,7 @@
 import { ref } from 'vue'
 //import $ from 'jquery'
 import { diff, addedDiff, deletedDiff, updatedDiff, detailedDiff } from 'deep-object-diff';
+import { JsonForms, JsonFormsChangeEvent } from "@jsonforms/vue";
 
 
 export default {
@@ -39,10 +40,11 @@ export default {
     name(newName) {
 			let thisname = this.$route.params.id;
       //localStorage[thisname] = newName;
-			this.diffs = JSON.stringify(diff(JSON.parse(newName), JSON.parse(localStorage[thisname])));
-			this.additions = JSON.stringify(addedDiff(JSON.parse(newName), JSON.parse(localStorage[thisname])));
-			this.modifications = JSON.stringify(updatedDiff(JSON.parse(newName), JSON.parse(localStorage[thisname])));
-			this.deletions = JSON.stringify(deletedDiff(JSON.parse(newName), JSON.parse(localStorage[thisname])));
+			//this.diffs = JSON.stringify(diff(JSON.parse(newName), JSON.parse(localStorage[thisname])));
+			this.additions = JSON.stringify(addedDiff(JSON.parse(localStorage[thisname]), JSON.parse(newName)));
+			this.modifications = JSON.stringify(updatedDiff(JSON.parse(localStorage[thisname]), JSON.parse(newName)));
+			this.deletions = JSON.stringify(deletedDiff(JSON.parse(localStorage[thisname]), JSON.parse(newName)));
+			this.diffs = JSON.stringify(detailedDiff(JSON.parse(localStorage[thisname]), JSON.parse(newName)));
 
     }
   },
