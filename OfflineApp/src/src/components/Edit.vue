@@ -1,6 +1,11 @@
 <template>
   <div id="edit">
 		<p>Modification de <span v-html="id"></span></p>
+		<FormKit type="text" />
+		<FormKit type="form" v-model="data" @submit="register">
+    	<FormKitSchema :schema="schema"/>
+  	</FormKit>
+  <pre wrap>{{ data }}</pre>
 		<textarea v-model="name">
 			
 		</textarea>
@@ -8,10 +13,14 @@
 		<div id="modifications" v-html="modifications"></div>
 		<div id="deletions" v-html="deletions"></div>
 		<div id="diffs" v-html="diffs"></div>
+
 	</div>
 </template>
 
 <script>
+import {FormKit} from '@formkit/vue'
+
+
 //import $ from 'jquery'
 import { diff, addedDiff, deletedDiff, updatedDiff, detailedDiff } from 'deep-object-diff';
 
@@ -23,7 +32,57 @@ export default {
 			additions: "",
 			deletions: "",
 			modifications: "",
-			diffs: ""
+			diffs: "",
+			data: {},
+			schema: [
+        {
+          $el: 'h1',
+          children: 'Register'
+        },
+        {
+          $formkit: 'text',
+          name: 'email',
+          label: 'Email',
+          help: 'This will be used for your account.',
+          validation: 'required|email'
+        },
+        {
+          $formkit: 'password',
+          name: 'password',
+          label: 'Password',
+          help: 'Enter your new password.',
+          validation: 'required|length:5,16'
+        },
+        {
+          $formkit: 'password',
+          name: 'password_confirm',
+          label: 'Confirm password',
+          help: 'Enter your new password again to confirm it.',
+          validation: 'required|confirm',
+          validationLabel: 'password confirmation',
+        },
+        {
+          $cmp: 'FormKit',
+          props: {
+            name: 'eu_citizen',
+            type: 'checkbox',
+            id: 'eu',
+            label: 'Are you a european citizen?',
+          }
+        },
+        {
+          $formkit: 'select',
+          if: '$get(eu).value', // 👀 Oooo, conditionals!
+          name: 'cookie_notice',
+          label: 'Cookie notice frequency',
+          options: {
+            refresh: 'Every page load',
+            hourly: 'Ever hour',
+            daily: 'Every day'
+          },
+          help: 'How often should we display a cookie notice?'
+        }
+      ]
 		}
 	},
   mounted() {
@@ -32,6 +91,7 @@ export default {
   	if (localStorage[thisname]) {
       this.name = localStorage[thisname];
     }
+		
   },
   watch: {
     name(newName) {
@@ -52,6 +112,10 @@ export default {
     reset() {
       this.$refs.JsonEditor.reset();
     },
+		async register() {
+      await new Promise((r) => setTimeout(r, 2000))
+      alert('Account created!')
+    }
   }
 }
 </script>

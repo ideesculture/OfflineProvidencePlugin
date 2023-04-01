@@ -13,6 +13,7 @@ import List from './components/List.vue'
 			<div id="searchBar"><input type="text">🔎</div>
 		</div>
 		<router-view/>
+		
   </div>
 	
 </template>

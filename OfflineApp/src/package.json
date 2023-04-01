@@ -10,6 +10,8 @@
         "preview": "vite preview"
     },
     "dependencies": {
+        "@formkit/themes": "^0.16.4",
+        "@formkit/vue": "^0.16.4",
         "@jsonforms/vue-vanilla": "^3.0.0",
         "deep-object-diff": "^1.1.9",
         "jquery": "^3.6.4",
