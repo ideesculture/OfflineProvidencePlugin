@@ -12,7 +12,6 @@
 </template>
 
 <script>
-import { ref } from 'vue'
 //import $ from 'jquery'
 import { diff, addedDiff, deletedDiff, updatedDiff, detailedDiff } from 'deep-object-diff';
 
@@ -55,8 +54,6 @@ export default {
     },
   }
 }
-
-const count = ref(0)
 </script>
 
 <style lang="scss" scoped>
