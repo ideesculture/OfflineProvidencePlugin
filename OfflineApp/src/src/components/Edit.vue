@@ -5,7 +5,7 @@
 		<FormKit type="form" v-model="data" @submit="register">
     	<FormKitSchema :schema="schema"/>
   	</FormKit>
-  <pre wrap>{{ data }}</pre>
+  	<pre wrap>{{ data }}</pre>
 		<textarea v-model="name">
 			
 		</textarea>
@@ -18,8 +18,11 @@
 </template>
 
 <script>
-import {FormKit} from '@formkit/vue'
-
+/*
+TODO : Utiliser les deep-references pour ne modifier que
+ certains points de l'arbre de l'occurrence en mémoire
+ https://formkit.com/essentials/schema#deep-references
+*/
 
 //import $ from 'jquery'
 import { diff, addedDiff, deletedDiff, updatedDiff, detailedDiff } from 'deep-object-diff';
