@@ -5,10 +5,6 @@
     	<FormKitSchema :schema="schema" :data="data" />
   	</FormKit>
   	<pre wrap>{{ data }}</pre>
-<!--		<div id="additions" v-html="additions"></div>
-		<div id="modifications" v-html="modifications"></div>
-		<div id="deletions" v-html="deletions"></div>
-		<div id="diffs" v-html="diffs"></div> -->
 		<pre>
 			{{ original }}
 		</pre>
@@ -50,6 +46,58 @@ export default {
           label: 'Référence',
           help: 'Référence',
           validation: 'required'
+        },
+				{
+					$el: 'hr', // try an h1!
+					attrs: {
+						class: 'ruler'
+					}
+				},
+				{
+          $formkit: 'checkbox',
+          name: 'numinventaire_expertise_numinventaire_marque_etiquette',
+          label: "Numéro d'inventaire marqué sur l'étiquette"
+        },
+				{
+          $formkit: 'checkbox',
+          name: 'numinventaire_expertise_numinventaire_marque_objet',
+          label: "Numéro d'inventaire marqué sur l'objet"
+        },
+				{
+          $formkit: 'checkbox',
+          name: 'numinventaire_expertise_numinventaire_marque_support',
+          label: "Numéro d'inventaire marqué sur un autre support"
+        },
+				{
+          $formkit: 'checkbox',
+          name: 'numinventaire_expertise_numinventaire_nonid',
+          label: "Numéro d'inventaire non identifiable"
+        },
+				{
+					$el: 'hr', // try an h1!
+					attrs: {
+						class: 'ruler'
+					}
+				},
+				{
+          $formkit: 'checkbox',
+          name: 'occurrence_media_occurrence_photo_existante',
+          label: "Numéro d'inventaire marqué sur l'étiquette"
+        },
+				{
+          $formkit: 'checkbox',
+          name: 'occurrence_media_occurrence_photo_marques',
+          label: "Numéro d'inventaire marqué sur l'objet"
+        },
+				{
+          $formkit: 'checkbox',
+          name: 'occurrence_media_occurrence_photo_numinventaire',
+          label: "Numéro d'inventaire marqué sur un autre support"
+        },
+				{
+          $formkit: 'checkbox',
+          name: 'occurrence_media_occurrence_photo_recolement',
+          label: "Numéro d'inventaire non identifiable"
         }
       ]
 		}
@@ -63,17 +111,20 @@ export default {
     }
 		this.data.Titre = this.original.preferred_labels.fr_FR[0].name;
 		this.data.idno = this.original.idno.value;
+		this.data.numinventaire_expertise_numinventaire_marque_etiquette = (this.original["ca_occurrences.numinventaire_expertise"][648135].fr_FR.numinventaire_marque_etiquette == "Oui");
+		this.data.numinventaire_expertise_numinventaire_marque_objet = (this.original["ca_occurrences.numinventaire_expertise"][648135].fr_FR.numinventaire_marque_objet == "Oui");
+		this.data.numinventaire_expertise_numinventaire_marque_support = (this.original["ca_occurrences.numinventaire_expertise"][648135].fr_FR.numinventaire_marque_support == "Oui");
+		this.data.numinventaire_expertise_numinventaire_nonid = (this.original["ca_occurrences.numinventaire_expertise"][648135].fr_FR.numinventaire_nonid == "Oui");
+
+		this.data.occurrence_media_occurrence_photo_existante = (this.original["ca_occurrences.occurrence_media"][648202].fr_FR.occurrence_photo_existante == "Oui");
+		this.data.occurrence_media_occurrence_photo_marques = (this.original["ca_occurrences.occurrence_media"][648202].fr_FR.occurrence_photo_marques == "Oui");
+		this.data.occurrence_media_occurrence_photo_numinventaire = (this.original["ca_occurrences.occurrence_media"][648202].fr_FR.occurrence_photo_numinventaire == "Oui");
+		this.data.occurrence_media_occurrence_photo_recolement = (this.original["ca_occurrences.occurrence_media"][648202].fr_FR.occurrence_photo_recolement == "Oui");
   },
   watch: {
     name(newName) {
 			let thisname = this.$route.params.id;
-      //localStorage[thisname] = newName;
-			//this.diffs = JSON.stringify(diff(JSON.parse(newName), JSON.parse(localStorage[thisname])));
-			this.additions = JSON.stringify(addedDiff(JSON.parse(localStorage[thisname]), JSON.parse(newName)));
-			this.modifications = JSON.stringify(updatedDiff(JSON.parse(localStorage[thisname]), JSON.parse(newName)));
-			this.deletions = JSON.stringify(deletedDiff(JSON.parse(localStorage[thisname]), JSON.parse(newName)));
-			this.diffs = JSON.stringify(detailedDiff(JSON.parse(localStorage[thisname]), JSON.parse(newName)));
-
+      localStorage[thisname] = newName;
     }
   },
 	methods: {
@@ -91,7 +142,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 #edit {
 	clear:both;
 	text-align: left;
@@ -111,5 +162,9 @@ export default {
 }
 #deletions {
 	background: red;
+}
+hr.ruler {
+	border-bottom: 1px solid rgba(0,0,0,0.1);
+	margin:30px 100px 30px 100px;
 }
 </style>
