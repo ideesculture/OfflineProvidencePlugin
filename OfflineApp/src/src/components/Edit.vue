@@ -1,13 +1,13 @@
 <template>
-  <div id="edit">
+	<div id="edit">
 		<p>Modification de <span v-html="id"></span></p>
 		<FormKit type="form" v-model="data" @submit="register">
-    	<FormKitSchema :schema="schema" :data="data" />
-  	</FormKit>
-  	<pre wrap>{{ data }}</pre>
+			<FormKitSchema :schema="schema" :data="data" />
+		</FormKit>
+		<pre wrap>{{ data }}</pre>
 		<pre>
-			{{ original }}
-		</pre>
+					{{ original }}
+				</pre>
 	</div>
 </template>
 
@@ -24,8 +24,8 @@ import { diff, addedDiff, deletedDiff, updatedDiff, detailedDiff } from 'deep-ob
 export default {
 	data() {
 		return {
-			name : "",
-			id : this.$route.params.id,
+			name: "",
+			id: this.$route.params.id,
 			additions: "",
 			deletions: "",
 			modifications: "",
@@ -34,81 +34,412 @@ export default {
 			original: {},
 			titre: "titre",
 			schema: [
-        {
-          $formkit: 'text',
-          name: 'Titre',
-          label: 'Titre',
-          validation: 'required'
-        },
 				{
-          $formkit: 'text',
-          name: 'idno',
-          label: 'Référence',
-          help: 'Référence',
-          validation: 'required'
-        },
-				{
-					$el: 'hr', // try an h1!
-					attrs: {
-						class: 'ruler'
-					}
+					$el: 'h2',
+					attrs: {},
+					children: "Récolement de l'objet"
 				},
-				{
-          $formkit: 'checkbox',
-          name: 'numinventaire_expertise_numinventaire_marque_etiquette',
-          label: "Numéro d'inventaire marqué sur l'étiquette"
-        },
-				{
-          $formkit: 'checkbox',
-          name: 'numinventaire_expertise_numinventaire_marque_objet',
-          label: "Numéro d'inventaire marqué sur l'objet"
-        },
-				{
-          $formkit: 'checkbox',
-          name: 'numinventaire_expertise_numinventaire_marque_support',
-          label: "Numéro d'inventaire marqué sur un autre support"
-        },
-				{
-          $formkit: 'checkbox',
-          name: 'numinventaire_expertise_numinventaire_nonid',
-          label: "Numéro d'inventaire non identifiable"
-        },
-				{
-					$el: 'hr', // try an h1!
+				, {
+					$el: "div",
+					type: "group",
 					attrs: {
-						class: 'ruler'
-					}
+						class: "container"
+					},
+					children:
+						[{
+							$el: 'p',
+							children: "Objet lié"
+						},
+						{
+							$formkit: 'text',
+							name: 'Objet lié',
+							disabled: 'disabled',
+							value: "Le taureau camargue (Pesca-Luno) et poème en son honneur par Pierre PERRIN. 986.978 (est le récolement de)"
+						}]
+				}, {
+					$el: "div",
+					type: "group",
+					attrs: {
+						class: "container"
+					},
+					children:
+						[{
+							$el: 'p',
+							children: "Photographie spécifique au récolement"
+						},
+						{
+							$formkit: 'file',
+							accept: ".jpg",
+							help: "Choisir un fichier",
+							multiple: true
+						}]
+				}, {
+					$el: "div",
+					type: "group",
+					attrs: {
+						class: "container"
+					},
+					children:
+						[{
+							$el: 'p',
+							children: "Photographie documentaire"
+						},
+						{
+							$formkit: 'checkbox',
+							name: 'occurrence_media_occurrence_photo_existante',
+							label: "Photographie existante"
+						},
+						{
+							$formkit: 'checkbox',
+							name: 'occurrence_media_occurrence_photo_marques',
+							label: "Photographies des marques"
+						},
+						{
+							$formkit: 'checkbox',
+							name: 'occurrence_media_occurrence_photo_numinventaire',
+							label: "Photographie du / des numéros d'inventaire"
+						},
+						{
+							$formkit: 'checkbox',
+							name: 'occurrence_media_occurrence_photo_recolement',
+							label: "Photographie réalisée lors du récolement"
+						}]
+				}, {
+					$el: "div",
+					type: "group",
+					attrs: {
+						class: "container"
+					},
+					children:
+						[{
+							$el: 'p',
+							children: "Numéro de fiche du récolement précédent"
+						},
+						{
+							$formkit: 'text',
+							name: 'idno_recolement_precedent',
+							validation: 'required'
+						}
+						]
 				},
-				{
-          $formkit: 'checkbox',
-          name: 'occurrence_media_occurrence_photo_existante',
-          label: "Numéro d'inventaire marqué sur l'étiquette"
-        },
-				{
-          $formkit: 'checkbox',
-          name: 'occurrence_media_occurrence_photo_marques',
-          label: "Numéro d'inventaire marqué sur l'objet"
-        },
-				{
-          $formkit: 'checkbox',
-          name: 'occurrence_media_occurrence_photo_numinventaire',
-          label: "Numéro d'inventaire marqué sur un autre support"
-        },
-				{
-          $formkit: 'checkbox',
-          name: 'occurrence_media_occurrence_photo_recolement',
-          label: "Numéro d'inventaire non identifiable"
-        }
-      ]
+				, {
+					$el: "div",
+					type: "group",
+					attrs: {
+						class: "container"
+					},
+					children:
+						[{
+							$el: 'p',
+							children: "N° de fiche de récolement"
+						},
+
+						{
+							$formkit: 'text',
+							name: 'idno',
+							validation: 'required'
+						}
+						]
+				}, {
+					$el: "div",
+					type: "group",
+					attrs: {
+						class: "container"
+					},
+					children:
+						[{
+							$el: 'p',
+							children: "Nom de l'objet récolé"
+						},
+						{
+							$formkit: 'text',
+							name: 'nom_objet_recole',
+							validation: 'required'
+						}
+						]
+				}, {
+					$el: "div",
+					type: "group",
+					attrs: {
+						class: "container"
+					},
+					children:
+						[
+							{
+								$el: 'p',
+								children: "Présence du numéro d'inventaire"
+							}, {
+								$formkit: 'checkbox',
+								name: 'nom_objet_recole',
+								label: "Présence du numéro d'inventaire"
+							}, {
+								$formkit: 'text',
+								name: 'releve_numinventaire',
+								label: "Relevé du numéro d'inventaire",
+								validation: 'required'
+							}
+						]
+				}, {
+					$el: "div",
+					type: "group",
+					attrs: {
+						class: "container"
+					},
+					children:
+						[
+							{
+								$el: 'p',
+								attrs: { class: 'ruler' },
+								children: "Expertise du numéro d'inventaire"
+							},
+							{
+								$formkit: 'checkbox',
+								name: 'numinventaire_expertise_numinventaire_marque_etiquette',
+								label: "Numéro d'inventaire marqué sur l'étiquette"
+							},
+							{
+								$formkit: 'checkbox',
+								name: 'numinventaire_expertise_numinventaire_marque_objet',
+								label: "Numéro d'inventaire marqué sur l'objet"
+							},
+							{
+								$formkit: 'checkbox',
+								name: 'numinventaire_expertise_numinventaire_marque_support',
+								label: "Numéro d'inventaire marqué sur un autre support"
+							},
+							{
+								$formkit: 'checkbox',
+								name: 'numinventaire_expertise_numinventaire_nonid',
+								label: "Numéro d'inventaire non identifiable"
+							}
+						]
+				}, {
+					$el: "div",
+					type: "group",
+					attrs: {
+						class: "container"
+					},
+					children:
+						[
+							{
+								$el: 'p',
+								attrs: { class: 'ruler' },
+								children: "Présence d'un autre numéro"
+							},
+							{
+								$formkit: 'checkbox',
+								name: 'presence_autre_numero',
+								label: "Présence d'un autre numéro"
+							}, {
+								$formkit: 'text',
+								name: 'releve_numinventaire',
+								label: "Relevé du numéro d'inventaire",
+								validation: 'required'
+							}, {
+								$formkit: 'text',
+								name: 'Relevé du numéro',
+								label: "Relevé du numéro"
+							}]
+				}, {
+					$el: "div",
+					type: "group",
+					attrs: {
+						class: "container"
+					},
+					children:
+						[{
+							$el: 'p',
+							children: "Problème d'identification"
+						}, {
+							$formkit: 'checkbox',
+							name: 'probleme_identification',
+							label: "Problème d'identification"
+						}]
+				}, {
+					$el: "div",
+					type: "group",
+					attrs: {
+						class: "container"
+					},
+					children:
+						[{
+							$el: 'p',
+							children: "Présence du bien dans le récolement précédent"
+						}, {
+					$formkit: 'checkbox',
+					name: 'presence_bien_recolement_precedent',
+					label: "Présence du bien dans le récolement précédent"
+				}]}, {
+					$el: "div",
+					type: "group",
+					attrs: {
+						class: "container"
+					},
+					children:
+						[{
+							$el: 'p',
+							children: "Présence du bien dans le récolement en cours"
+						},  {
+					$formkit: 'checkbox',
+					name: 'presence_bien_recolement_en_cours',
+					label: "Vu"
+				}]}, {
+					$el: "div",
+					type: "group",
+					attrs: {
+						class: "container"
+					},
+					children:
+						[{
+							$el: 'p',
+							children: "Date du précédent récolement"
+						},  {
+					$formkit: 'date',
+					name: 'date_precedent_recolement',
+					label: "Date du précédent récolement"
+				}]},{
+					$el: "div",
+					type: "group",
+					attrs: {
+						class: "container"
+					},
+					children:
+						[{
+							$el: 'p',
+							children: "Date du récolement en cours"
+						}, {
+					$formkit: 'date',
+					name: 'date_precedent_recolement',
+					label: "Date du récolement en cours"
+				}]}, {
+					$el: "div",
+					type: "group",
+					attrs: {
+						class: "container"
+					},
+					children:
+						[
+							{
+								$el: 'p',
+								attrs: { class: 'ruler' },
+								children: "Localisation dans le précédent récolement"
+							}, {
+								$formkit: 'date',
+								name: 'date_visualisation_precedent_recolement',
+								label: "Date de visualisation"
+							}, {
+								$formkit: 'select',
+								name: 'localisation_precedent_recolement',
+								label: "Localisation",
+								options: ["loc1", "loc2", "loc3"]
+							}
+						]
+				}, {
+					$el: "div",
+					type: "group",
+					attrs: {
+						class: "container"
+					},
+					children:
+						[
+							{
+								$el: 'p',
+								attrs: { class: 'ruler' },
+								children: "Emplacements liés"
+							},{
+							$formkit: 'text',
+							name: 'Emplacements liés',
+							disabled: 'disabled',
+							value: "Salle 3"
+						}]
+				}, {
+					$el: "div",
+					type: "group",
+					attrs: {
+						class: "container"
+					},
+					children:
+						[{
+								$el: 'p',
+								attrs: { class: 'ruler' },
+								children: "Campagne liée"
+							},
+							{
+								$formkit: 'text',
+								name: 'Campagne liée',
+								disabled: 'disabled',
+								value: "Campagne n°1 – arts graphiques R4-1 (est lié à)"
+							}]
+				}, {
+					$el: "div",
+					type: "group",
+					attrs: {
+						class: "container"
+					},
+					children:
+						[{
+								$el: 'p',
+								attrs: { class: 'ruler' },
+								children: "Date de visualisation"
+							},{
+							$formkit: 'date',
+							name: 'date_visualisation_precedent_recolement',
+						}]
+				}, {
+					$el: "div",
+					type: "group",
+					attrs: {
+						class: "container"
+					},
+					children:
+						[{
+								$el: 'p',
+								attrs: { class: 'ruler' },
+								children: "Date de validation"
+							},{
+							$formkit: 'date',
+							name: 'date_visualisation_precedent_recolement',
+							label: "Date de validation sur pièce et sur place"
+						}, {
+							$formkit: 'date',
+							name: 'date_visualisation_precedent_recolement',
+							label: "Date de validation définitive"
+						}]
+				}, {
+					$el: "div",
+					type: "group",
+					attrs: {
+						class: "container"
+					},
+					children:
+						[{	$el: 'p',children: "Valideur"	},{
+							$formkit: 'text',
+							name: 'Valideur'
+						}]
+				}, {
+					$el: "div",
+					type: "group",
+					attrs: {
+						class: "container"
+					},
+					children:
+						[{	$el: 'p',children: "Récolement fait"	},{
+							$formkit: 'checkbox',
+							name: 'Récolement fait',
+							label: "Récolement fait"
+						}]
+				}
+
+			]
 		}
 	},
-  mounted() {
+	mounted() {
 		console.log();
 		let thisname = this.$route.params.id;
-  	if (localStorage[thisname]) {
-      this.name = localStorage[thisname];
+		if (localStorage[thisname]) {
+			this.name = localStorage[thisname];
 			this.original = JSON.parse(this.name);
-    }
+		}
 		this.data.Titre = this.original.preferred_labels.fr_FR[0].name;
 		this.data.idno = this.original.idno.value;
 		this.data.numinventaire_expertise_numinventaire_marque_etiquette = (this.original["ca_occurrences.numinventaire_expertise"][648135].fr_FR.numinventaire_marque_etiquette == "Oui");
@@ -120,51 +451,84 @@ export default {
 		this.data.occurrence_media_occurrence_photo_marques = (this.original["ca_occurrences.occurrence_media"][648202].fr_FR.occurrence_photo_marques == "Oui");
 		this.data.occurrence_media_occurrence_photo_numinventaire = (this.original["ca_occurrences.occurrence_media"][648202].fr_FR.occurrence_photo_numinventaire == "Oui");
 		this.data.occurrence_media_occurrence_photo_recolement = (this.original["ca_occurrences.occurrence_media"][648202].fr_FR.occurrence_photo_recolement == "Oui");
-  },
-  watch: {
-    name(newName) {
+	},
+	watch: {
+		name(newName) {
 			let thisname = this.$route.params.id;
-      localStorage[thisname] = newName;
-    }
-  },
+			localStorage[thisname] = newName;
+		}
+	},
 	methods: {
-    submit(_e) {
-      alert(JSON.stringify(this.model));
-    },
-    reset() {
-      this.$refs.JsonEditor.reset();
-    },
+		submit(_e) {
+			alert(JSON.stringify(this.model));
+		},
+		reset() {
+			this.$refs.JsonEditor.reset();
+		},
 		async register() {
-      await new Promise((r) => setTimeout(r, 2000))
-      alert('Account created!')
-    }
-  }
+			await new Promise((r) => setTimeout(r, 2000))
+			alert('Account created!')
+		}
+	}
 }
 </script>
 
 <style lang="scss">
 #edit {
-	clear:both;
+	clear: both;
 	text-align: left;
-	margin:auto;
-	max-width:1000px;
-	padding:8px;
+	margin: auto;
+	max-width: 1000px;
+	padding: 8px;
+
 	textarea {
-		width:calc(100% - 28px);
-		min-height:300px;
+		width: calc(100% - 28px);
+		min-height: 300px;
 	}
 }
+
 #additions {
-	background:lightgreen;
+	background: lightgreen;
 }
+
 #modifications {
 	background: lightblue;
 }
+
 #deletions {
 	background: red;
 }
+
 hr.ruler {
-	border-bottom: 1px solid rgba(0,0,0,0.1);
-	margin:30px 100px 30px 100px;
+	border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+	margin: 30px 100px 30px 100px;
 }
-</style>
+
+.formkit-wrapper,
+.formkit-fieldset {
+	max-width: 1000px !important;
+}
+
+div.container {
+	background-color: #f9f9f9;
+	box-shadow: rgba(9, 30, 66, 0.25) 0px 4px 8px -2px, rgba(9, 30, 66, 0.08) 0px 0px 0px 1px;
+	padding: 20px 20px 8px 20px;
+	margin-top: 20px;
+	margin-bottom: 14px;
+
+	input,
+	select {
+		background-color: white;
+	}
+
+	p {
+		margin-top: -40px;
+		display: inline-block;
+		margin-left: -20px;
+		padding: 4px 10px 4px 20px;
+		font-size: 1.1em;
+		background-color: #2881fe;
+		color: white;
+		border-radius: 0 10px 10px 0;
+	}
+}</style>
