@@ -10,6 +10,7 @@
         "preview": "vite preview"
     },
     "dependencies": {
+        "@formkit/addons": "^0.16.4",
         "@formkit/themes": "^0.16.4",
         "@formkit/vue": "^0.16.4",
         "@jsonforms/vue-vanilla": "^3.0.0",
