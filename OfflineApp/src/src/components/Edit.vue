@@ -78,9 +78,9 @@ export default {
 					$el: "div",
 					type: "group",
 					attrs: {
-						class: "step1"
+						class: "step step1",
+						"data-stepnum": "step1"
 					},
-					if: '$step1 == true',
 					children: [
 						
 					]
@@ -88,9 +88,9 @@ export default {
 					$el: "div",
 					type: "group",
 					attrs: {
-						class: "step2"
+						class: "step step2",
+						"data-stepnum": "step2"
 					},
-					if: '$step2 == true',
 					children: [
 						{
 							$el: "div",
@@ -491,9 +491,9 @@ export default {
 					$el: "div",
 					type: "group",
 					attrs: {
-						class: "step3"
+						class: "step step3",
+						"data-stepnum": "step3"
 					},
-					if: '$step3 == true',
 					children: [
 						
 					]
@@ -521,6 +521,18 @@ export default {
 		this.data.step1 = false;
 		this.data.step2 = true;
 		this.data.step3 = false;
+		let h2s = document.querySelectorAll("h2");
+		h2s.forEach(function(h2){
+			h2.addEventListener('click', function(e) {
+				let steps = document.querySelectorAll("div.step");
+				steps.forEach(function(step){
+					step.hidden = true;
+				});
+				let stepnum = e.srcElement.className;
+				console.log(stepnum);
+				document.querySelector("div."+stepnum).hidden = false;
+			});
+		});
 	},
 	watch: {
 		name(newName) {
@@ -597,7 +609,7 @@ div.container {
 		margin-left: -20px;
 		padding: 4px 10px 4px 20px;
 		font-size: 1.1em;
-		background-color: #2881fe;
+		background-color: #19b4c8;
 		color: white;
 		border-radius: 0 10px 10px 0;
 	}
@@ -615,7 +627,7 @@ div.container {
 		font-weight: normal;
 	}
 	h2.step2 {
-		background-color: #2881fe;
+		background-color: #19b4c8;
 		color: white;
 	}
 }
