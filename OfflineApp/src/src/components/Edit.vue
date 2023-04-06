@@ -631,6 +631,9 @@ div.container {
 		color: white;
 	}
 }
+button.formkit-input {
+	background-color: #19b4c8 !important;
+}
 .step1 {
 	.container {
 		display: none;
