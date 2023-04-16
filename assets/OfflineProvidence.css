@@ -1,0 +1,7 @@
+#offlineImportButton {
+	text-align:center;width:100%;margin-top:10px;margin-bottom: 10px;
+}
+#offlineImportButton a {
+	color: #1ab3c8;
+  text-decoration: underline;
+}
