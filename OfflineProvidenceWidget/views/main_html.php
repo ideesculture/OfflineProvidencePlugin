@@ -14,6 +14,7 @@
 		<p>🔴 Vous êtes en mode hors connexion.</p>
 		<p><a href="/offline" target="_blank"><button>Saisie hors connexion</button></a></p>
 	</div>
+	<a href="<?= __CA_URL_ROOT__ ?>/index.php/OfflineProvidence/Store/Populate/campagne_id/37"><button>Générer le cache pour la campagne 37</button></a>
 	<iframe src="/offline/" style="height:10px;width:10px;float:right;margin-top:-8px;opacity:0.1"></iframe>
 	<script>
 		window.onoffline = function() {
