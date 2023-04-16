@@ -45,6 +45,7 @@ class StoreController extends ActionController
 		WHERE deleted =0 
 		AND relation_id is not null 
 		AND occurrence_right_id =$campagne_id
+		LIMIT 1
  		";
 
 		$qr_res = $o_data->query($query);
@@ -54,6 +55,7 @@ class StoreController extends ActionController
 			$infos = getOccurrenceDetails($qr_res->get("id"), $this->authToken);
 			file_put_contents($this->ps_plugin_path . "/json/67_" . $qr_res->get("id") . ".json", $infos);
 			$fileList[] = $this->ps_plugin_path . "/json/67_" . $qr_res->get("id") . ".json";
+			
 		}
 
 		$this->view->setVar("fileList", $fileList);
