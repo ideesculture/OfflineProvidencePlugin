@@ -3,6 +3,10 @@
 use Swaggest\JsonDiff\JsonDiff;
 
 require_once __CA_MODELS_DIR__ . "/ca_objects.php";
+require_once __CA_MODELS_DIR__ . "/ca_editor_uis.php";
+require_once __CA_MODELS_DIR__ . "/ca_metadata_elements.php";
+require_once __CA_MODELS_DIR__ . "/ca_attributes.php";
+//require_once __CA_MODELS_DIR__ . "/ca_editor_ui_screens";
 require_once __CA_APP_DIR__ . "/plugins/OfflineProvidence/lib/curl_ca_ws.php";
 error_reporting(E_ERROR);
 ini_set("display_errors", "on");
@@ -36,15 +40,47 @@ class StoreController extends ActionController
 
 	public function Populate()
 	{
+		// Download occurrence editor
+		$editors = [];
+		// Todo fetch for all editors
+		$vt_editor = new ca_editor_uis(19);
+		$editor_target_ref = "67_142_editor";
+		$editors[$editor_target_ref] = [];
+		// Récupération des écrans
+		$screens = $vt_editor->getScreens();
+		foreach($screens as $key=>$screen) {
+			$vt_screen = new ca_editor_ui_screens($screen["screen_id"]);
+			$editors[$editor_target_ref][$key]["label"] = $vt_screen->getLabelForDisplay();
+			$editors[$editor_target_ref][$key]["placements"]= [];
+			//var_dump($vt_scree);die();
+			foreach($vt_screen->getPlacements() as $placement) {
+				// les emplacements ont des réglages pour l'affichage, inutiles ici
+				unset($placement["settingsForm"]);
+				unset($placement["settings"]);
+				unset($placement["display"]);
+				// Si attribut, on définit le type de l'attribut, et l'ID de la metadata
+				if(strpos($placement["bundle_name"],"ca_attribute_") === 0) {
+					$placement["attribute"] = str_replace("ca_attribute_", "", $placement["bundle_name"]);
+					$placement["type"] = "attribute";
+					$vt_metadata_element = new ca_metadata_elements();
+					$vt_metadata_element->load(["element_code"=>$placement["attribute"]]);
+					$placement["metadata_id"] = $vt_metadata_element->getPrimaryKey();
+					$datatype = $vt_metadata_element->get("datatype");
+					$placement["datatype"] = ca_metadata_elements::getAttributeNameForTypeCode($datatype);
+				}
+				$editors[$editor_target_ref][$key]["placements"][$placement["placement_id"]] = $placement;
+			}
+		}
+		$this->view->setVar("editors", $editors);
+
 		$campagne_id = $this->getRequest()->getParameter("campagne_id", pInteger);
 		$o_data = new Db();
 		$query = "
-		SELECT coo.occurrence_left_id as id 
+		SELECT co.occurrence_id as id,
+		co.type_id as type_id
 		FROM ca_occurrences co 
-		LEFT JOIN ca_occurrences_x_occurrences coo on co.occurrence_id = coo.occurrence_left_id 
 		WHERE deleted =0 
-		AND relation_id is not null 
-		AND occurrence_right_id =$campagne_id
+		AND co.type_id=142
 		LIMIT 1
  		";
 
@@ -53,11 +89,11 @@ class StoreController extends ActionController
 		$fileList = [];
 		while ($qr_res->nextRow()) {
 			$infos = getOccurrenceDetails($qr_res->get("id"), $this->authToken);
-			file_put_contents($this->ps_plugin_path . "/json/67_" . $qr_res->get("id") . ".json", $infos);
-			$fileList[] = $this->ps_plugin_path . "/json/67_" . $qr_res->get("id") . ".json";
+			file_put_contents($this->ps_plugin_path . "/json/67_" . $qr_res->get("type_id") ."_". $qr_res->get("id") . ".json", $infos);
+			$fileList[] = $this->ps_plugin_path . "/json/67_" . $qr_res->get("type_id") ."_". $qr_res->get("id") . ".json";
 			
 		}
-
+		//var_dump($fileList);die();
 		$this->view->setVar("fileList", $fileList);
 		$this->render("store_populate_html.php");
 	}

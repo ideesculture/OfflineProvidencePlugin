@@ -2,6 +2,8 @@
 error_reporting(E_ERROR);
 ini_set('display_errors', 1);
 $fileList = $this->getVar("fileList");
+$editors = $this->getVar("editors");
+$editorsJson = json_encode($editors);
 $fileListJson = json_encode($fileList);
 ?>
 <h1>
@@ -17,6 +19,10 @@ $fileListJson = json_encode($fileList);
     $(document).ready(function() {
 
         var fileListJson = <?= $fileListJson ?>;
+		var editorsJson = <?= $editorsJson ?>;
+		for (const id in editorsJson) {
+			store.setItem(id, editorsJson[id]);
+		}
         for (const id in fileListJson) {
 
             $.ajax("<?= __CA_URL_ROOT__ ?>" + fileListJson[id].replace("<?= __CA_BASE_DIR__ ?>", ""), {
