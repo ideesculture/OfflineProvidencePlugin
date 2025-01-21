@@ -27,7 +27,7 @@
  */
  	require_once(__CA_LIB_DIR__.'/BaseWidget.php');
  	require_once(__CA_LIB_DIR__.'/IWidget.php');
- 
+
 	class offlineWidget extends BaseWidget implements IWidget {
 		# -------------------------------------------------------
 		private $opo_config;
@@ -52,7 +52,7 @@
 		public function checkStatus() {
 			$vb_available = ((bool)$this->opo_config->get('enabled'));
 
-			if(!$this->getRequest() || !$this->getRequest()->user->canDoAction("can_use_counts_widget")){
+			if(!$this->getRequest()){
 				$vb_available = false;
 			}
 
