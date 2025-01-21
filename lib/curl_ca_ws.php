@@ -7,10 +7,18 @@ function getAuthToken() {
 	if(curl_error($curl)) {
 		die("probleme connexion curl");
 	} else {
+		if(defined("__DH_CA_NO_VALID_SSL__") && constant("__DH_CA_NO_VALID_SSL__") === true ) {
+			curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+			curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
+			curl_setopt($curl, CURLOPT_FOLLOWLOCATION, TRUE);
+		}
+
 		$content = curl_exec($curl);
 
 		// Check the return value of curl_exec(), too
 		if ($content === false) {
+			var_dump(curl_error($curl));
+			die();
 			throw new Exception(curl_error($curl), curl_errno($curl));
 		}
 		$result = json_decode($content, true);
@@ -31,6 +39,11 @@ function getObjDetail($id, $authToken) {
 		$result = false;
 		die("probleme connexion curl");
 	} else {
+		if(defined("__DH_CA_NO_VALID_SSL__") && constant("__DH_CA_NO_VALID_SSL__") === true ) {
+			curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+			curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
+			curl_setopt($curl, CURLOPT_FOLLOWLOCATION, TRUE);
+		}		
 		$result = json_decode(curl_exec($curl));
 		//print $result ;
 		//$result = json_decode(curl_exec ($curl), true);
@@ -48,6 +61,11 @@ function getOccurrenceDetails($id, $authToken) {
 		$result = false;
 		die("probleme connexion curl");
 	} else {
+		if(defined("__DH_CA_NO_VALID_SSL__") && constant("__DH_CA_NO_VALID_SSL__") === true ) {
+			curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+			curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
+			curl_setopt($curl, CURLOPT_FOLLOWLOCATION, TRUE);
+		}
 		//$result = json_decode(curl_exec($curl));
 		//print $result ;
 		$result = curl_exec ($curl);
@@ -66,6 +84,11 @@ function writeOccurrenceDetails($id, $json, $authToken) {
 		var_dump($msg);
 		die("probleme connexion curl");
 	} else {
+		if(defined("__DH_CA_NO_VALID_SSL__") && constant("__DH_CA_NO_VALID_SSL__") === true ) {
+			curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+			curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
+			curl_setopt($curl, CURLOPT_FOLLOWLOCATION, TRUE);
+		}
 		//$result = json_decode(curl_exec($curl));
 		//print $result ;
 		$result = curl_exec ($curl);
@@ -84,6 +107,11 @@ function getModelObject($type,$authToken){
 		$result = false;
 		die("probleme connexion curl");
 	} else {
+		if(defined("__DH_CA_NO_VALID_SSL__") && constant("__DH_CA_NO_VALID_SSL__") === true ) {
+			curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+			curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
+			curl_setopt($curl, CURLOPT_FOLLOWLOCATION, TRUE);
+		}
 		$result = json_decode(curl_exec($curl));
 		//print $result ;
 		//$result = json_decode(curl_exec ($curl), true);
@@ -128,6 +156,11 @@ function getObjectTypeCode($type_id, $authToken){
 		$result = false;
 		die("probleme connexion curl");
 	} else {
+		if(defined("__DH_CA_NO_VALID_SSL__") && constant("__DH_CA_NO_VALID_SSL__") === true ) {
+			curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+			curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
+			curl_setopt($curl, CURLOPT_FOLLOWLOCATION, TRUE);
+		}
 		$result = json_decode(curl_exec($curl));
 		//print $result ;
 		//$result = json_decode(curl_exec ($curl), true);
