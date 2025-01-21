@@ -38,8 +38,7 @@ class StoreController extends ActionController
 		$this->authToken = getAuthToken();
 	}
 
-	public function Populate()
-	{
+	public function Populate() {
 		// Download occurrence editor
 		$editors = [];
 		// Todo fetch for all editors
@@ -95,6 +94,32 @@ class StoreController extends ActionController
 		}
 		//var_dump($fileList);die();
 		$this->view->setVar("fileList", $fileList);
+		$this->render("store_populate_html.php");
+	}
+
+	public function PopulateFromParent() {
+		$parent_id = $this->getRequest()->getParameter("parent_id", pInteger);
+		$o_data = new Db();
+		$query = "
+		SELECT co.object_id as id,
+		co.type_id as type_id
+		FROM ca_objects co 
+		WHERE deleted =0 
+		LIMIT 1
+ 		";
+
+		$qr_res = $o_data->query($query);
+		
+		$fileList = [];
+		while ($qr_res->nextRow()) {
+			$infos = getOccurrenceDetails($qr_res->get("id"), $this->authToken);
+			file_put_contents($this->ps_plugin_path . "/json/67_" . $qr_res->get("type_id") ."_". $qr_res->get("id") . ".json", $infos);
+			$fileList[] = $this->ps_plugin_path . "/json/67_" . $qr_res->get("type_id") ."_". $qr_res->get("id") . ".json";
+			
+		}
+		//var_dump($fileList);die();
+		$this->view->setVar("fileList", $fileList);
+		
 		$this->render("store_populate_html.php");
 	}
 
