@@ -100,27 +100,31 @@ class StoreController extends ActionController
 	public function PopulateFromParent() {
 		$parent_id = $this->getRequest()->getParameter("parent_id", pInteger);
 		$o_data = new Db();
-		$query = "
-		SELECT co.object_id as id,
-		co.type_id as type_id
-		FROM ca_objects co 
-		WHERE deleted =0 
-		LIMIT 1
- 		";
 
+		// Children
+		$query = "SELECT co.object_id as id, co.type_id as type_id, children.object_id as child_id, children.type_id as child_type_id
+		FROM ca_objects co LEFT JOIN ca_objects children ON children.parent_id=co.object_id WHERE co.parent_id = ".$parent_id." AND co.deleted = 0";
 		$qr_res = $o_data->query($query);
-		
+		$results = $qr_res->getAllRows();
 		$fileList = [];
-		while ($qr_res->nextRow()) {
-			$infos = getOccurrenceDetails($qr_res->get("id"), $this->authToken);
-			file_put_contents($this->ps_plugin_path . "/json/67_" . $qr_res->get("type_id") ."_". $qr_res->get("id") . ".json", $infos);
-			$fileList[] = $this->ps_plugin_path . "/json/67_" . $qr_res->get("type_id") ."_". $qr_res->get("id") . ".json";
-			
+		foreach($results as $key=>$value) {
+			$filename = $this->ps_plugin_path . "/json/objects/" . $value["child_type_id"] ."_". $value["child_id"] . ".json";
+			if(!is_file($filename)) {
+				$infos = getObjDetail($value["child_id"], $this->authToken);
+				$result = file_put_contents($filename, $infos);
+			}
+			$fileList[$value["child_id"]] = $filename;
+			$filename = $this->ps_plugin_path . "/json/objects/" . $value["type_id"] ."_". $value["id"] . ".json";
+			if(!is_file($filename)) {
+				$infos = getObjDetail($value["child_id"], $this->authToken);
+				$result = file_put_contents($filename, $infos);
+			}
+			$fileList[$value["id"]] = $filename;
 		}
-		//var_dump($fileList);die();
 		$this->view->setVar("fileList", $fileList);
 		
-		$this->render("store_populate_html.php");
+		print $this->render("store_populate_html.php");
+		exit();
 	}
 
 	public function Import() {
