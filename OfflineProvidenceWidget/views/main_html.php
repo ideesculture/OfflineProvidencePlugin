@@ -30,8 +30,11 @@
 		<p>🔴 Vous êtes en mode hors connexion.</p>
 		<p><a href="/offline" target="_blank"><button>Saisie hors connexion</button></a></p>
 	</div>
-	<a href="<?= __CA_URL_ROOT__ ?>/index.php/OfflineProvidence/Store/PopulateFromParent/parent_id/<?= $fabrique_id ?>"><button>Générer le cache pour la <?= $fabrique_label ?></button></a>
 
+	<p><?= $fabrique_label ?></p>
+
+	Synchronisation du cache<br/>
+	<iframe src="<?= __CA_URL_ROOT__ ?>/index.php/OfflineProvidence/Store/PopulateFromParent/parent_id/<?= $fabrique_id ?>" style="height:3px;width:100%;border:none;"></iframe>
 <?php
 
 ?>  
