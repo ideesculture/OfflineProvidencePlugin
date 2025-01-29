@@ -44,7 +44,7 @@ function getObjDetail($id, $authToken) {
 			curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
 			curl_setopt($curl, CURLOPT_FOLLOWLOCATION, TRUE);
 		}		
-		$result = json_decode(curl_exec($curl));
+		$result = curl_exec($curl);
 		//print $result ;
 		//$result = json_decode(curl_exec ($curl), true);
 		curl_close ($curl);
