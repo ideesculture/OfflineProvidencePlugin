@@ -115,15 +115,36 @@ class StoreController extends ActionController
 			}
 			$fileList[$value["child_id"]] = $filename;
 			$filename = $this->ps_plugin_path . "/json/objects/" . $value["type_id"] ."_". $value["id"] . ".json";
-			if(!is_file($filename)) {
-				$infos = getObjDetail($value["child_id"], $this->authToken);
-				$result = file_put_contents($filename, $infos);
-			}
+
+			// Store the object metadata in a json
+			$infos = getObjDetail($value["child_id"], $this->authToken);
+			$result = file_put_contents($filename, $infos);
 			$fileList[$value["id"]] = $filename;
+
+			// Store the object representation in a json
+			$representations = json_decode($infos, 1)["representations"];
+			foreach($representations as $representation) {
+				// Ignore non default representation
+				if(!$representation["is_primary"]) continue;
+				$filename_repr = $this->ps_plugin_path . "/json/representations/" . $representation["representation_id"] . ".json";
+				// fetch the image at $representation["paths"]["preview170"] and base64 encode it
+				$repr_url = $representation["urls"]["preview170"];
+				// development mode url patching
+				$repr_url = str_replace("acf.lescollections.test", "acf.lescollections.be", $repr_url);
+				$repr_data = base64_encode(file_get_contents($repr_url));
+				// store it in the json file
+				file_put_contents($filename_repr, json_encode(["preview170"=>$repr_data]));
+			}
+			$fileList["repr_"+$representation["representation_id"]] = $filename_repr;
 		}
 		$this->view->setVar("fileList", $fileList);
 		
 		print $this->render("store_populate_html.php");
+		exit();
+	}
+
+	public function Sync() {
+		print $this->render("store_sync_html.php");
 		exit();
 	}
 

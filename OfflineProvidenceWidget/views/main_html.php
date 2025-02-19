@@ -32,9 +32,15 @@
 	</div>
 
 	<p><?= $fabrique_label ?></p>
-
+<div>
+	Création du cache<br/>
+	<iframe id='cache_creation_iframe' loading="<?= __CA_URL_ROOT__ ?>/index.php/OfflineProvidence/Store/PopulateFromParent/parent_id/<?= $fabrique_id ?>" style="height:3px;width:100%;border:none;"></iframe>
+	<button onclick="$('#cache_creation_iframe').attr('src', $('#cache_creation_iframe').attr('loading'));">Créer le cache</button>
+</div>
+<div>
 	Synchronisation du cache<br/>
-	<iframe src="<?= __CA_URL_ROOT__ ?>/index.php/OfflineProvidence/Store/PopulateFromParent/parent_id/<?= $fabrique_id ?>" style="height:3px;width:100%;border:none;"></iframe>
+	<iframe src="<?= __CA_URL_ROOT__ ?>/index.php/OfflineProvidence/Store/Sync" style="height:3px;width:100%;border:none;"></iframe>
+</div>
 <?php
 
 ?>  
