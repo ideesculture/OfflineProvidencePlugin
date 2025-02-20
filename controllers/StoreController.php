@@ -109,10 +109,9 @@ class StoreController extends ActionController
 		$fileList = [];
 		foreach($results as $key=>$value) {
 			$filename = $this->ps_plugin_path . "/json/objects/" . $value["child_type_id"] ."_". $value["child_id"] . ".json";
-			if(!is_file($filename)) {
-				$infos = getObjDetail($value["child_id"], $this->authToken);
-				$result = file_put_contents($filename, $infos);
-			}
+			$infos = getObjDetail($value["child_id"], $this->authToken);
+			$result = file_put_contents($filename, $infos);
+
 			$fileList[$value["child_id"]] = $filename;
 			$filename = $this->ps_plugin_path . "/json/objects/" . $value["type_id"] ."_". $value["id"] . ".json";
 
