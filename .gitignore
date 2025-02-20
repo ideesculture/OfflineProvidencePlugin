@@ -23,3 +23,4 @@ OfflineApp/src/dist-ssr
 *.sln
 *.sw?
 json/objects/*.json
+json/representations/*.json
