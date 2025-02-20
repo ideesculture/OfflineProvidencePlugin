@@ -63,3 +63,7 @@ To build offlineApp, you need to cd inside OfflineApp/src :
 npm run build
 npm run copy
 ```
+
+# Tests
+
+fabrique211379628
