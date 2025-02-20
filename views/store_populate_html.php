@@ -34,35 +34,41 @@ $fileListJson = json_encode($fileList);
 	db.version(11).stores({ db_object_representations: 'id,data' });
 
     $(document).ready(function() {
-
+		$("#progression").css("width", "5%");
         var fileListJson = <?= $fileListJson ?>;
 		var editorsJson = <?= $editorsJson ?>;
-		
+		// remove all content from db.db_objects
+		db.db_objects.clear();
+		db.db_object_representations.clear();
+
+		// loop through all files
 		var elements = Object.keys(fileListJson).length;
 		let i = 0;
         for (const id in fileListJson) {
 			console.log("id", id);
-            $.ajax("<?= __CA_URL_ROOT__ ?>" + fileListJson[id].replace("<?= __CA_BASE_DIR__ ?>", ""), {
-                type: 'get',
-                dataType: "json",
-                cache: false,
-                success: function(data) {
-					// if filename contains /objects/
-					if(fileListJson[id].includes("/objects/")) {
-						let fileName = fileListJson[id].replace("<?= __CA_APP_DIR__ ?>/plugins/OfflineProvidence/json/objects/", "").replace(".json", "");
-						db.db_objects.put({id: fileName, idno: data.idno.value, data: data});
-						$("#progression").css("width", (i / elements) * 100 + "%");
+			if(fileListJson[id]) {
+				$.ajax("<?= __CA_URL_ROOT__ ?>" + fileListJson[id].replace("<?= __CA_BASE_DIR__ ?>", ""), {
+					type: 'get',
+					dataType: "json",
+					cache: false,
+					success: function(data) {
+						// if filename contains /objects/
+						if(fileListJson[id].includes("/objects/")) {
+							let fileName = fileListJson[id].replace("<?= __CA_APP_DIR__ ?>/plugins/OfflineProvidence/json/objects/", "").replace(".json", "");
+							db.db_objects.put({id: fileName, idno: data.idno.value, data: data});
+							$("#progression").css("width", (i / elements) * 100 + "%");
+						}
+						if(fileListJson[id].includes("/representations/")) {
+							let fileName = fileListJson[id].replace("<?= __CA_APP_DIR__ ?>/plugins/OfflineProvidence/json/representations/", "").replace(".json", "");
+							db.db_object_representations.put({id: fileName, data: data});
+							$("#progression").css("width", (i / elements) * 100 + "%");
+						}
+					},
+					error: function(error){
+						console.log("error", error);
 					}
-					if(fileListJson[id].includes("/representations/")) {
-						let fileName = fileListJson[id].replace("<?= __CA_APP_DIR__ ?>/plugins/OfflineProvidence/json/representations/", "").replace(".json", "");
-						db.db_object_representations.put({id: fileName, data: data});
-						$("#progression").css("width", (i / elements) * 100 + "%");
-					}
-                },
-                error: function(error){
-                    console.log("error", error);
-                }
-            })
+				})
+			}
 			i++;
         }
 
