@@ -5,6 +5,10 @@ $fileList = $this->getVar("fileList");
 $editors = $this->getVar("editors");
 $editorsJson = json_encode($editors);
 $fileListJson = json_encode($fileList);
+$entityList = $this->getVar("entityList");
+$entityListJson = json_encode($entityList);
+$storageLocationList = $this->getVar("storageLocationList");
+$storageLocationListJson = json_encode($storageLocationList);
 ?>
 <div id="progression_container" style="width:100%;background:white;">
 	<div id="progression" style="width:0%;background:#5cb4c8;height:10px"></div>
@@ -32,11 +36,19 @@ $fileListJson = json_encode($fileList);
 	db.version(9).stores({ db_lists: 'id,idno,data' });
 	db.version(10).stores({ db_lists: 'id,list_code,data' });
 	db.version(11).stores({ db_object_representations: 'id,data' });
+	db.version(12).stores({ db_objects: 'id,idno,data,edit,_edit' });
+	// adding labels for search speed increase
+	db.version(13).stores({ db_entities: 'id,idno,label,data' });
+	db.version(14).stores({ db_storage_locations: 'id,idno,label,data' });
+	db.version(15).stores({ db_places: 'id,idno,label,data' });
 
     $(document).ready(function() {
 		$("#progression").css("width", "5%");
         var fileListJson = <?= $fileListJson ?>;
 		var editorsJson = <?= $editorsJson ?>;
+		var entityListJson = <?= $entityListJson ?>;
+		var storageLocationListJson = <?= $storageLocationListJson ?>;
+
 		// remove all content from db.db_objects
 		db.db_objects.clear();
 		db.db_object_representations.clear();
@@ -72,6 +84,25 @@ $fileListJson = json_encode($fileList);
 			i++;
         }
 
+		// remove all content from db.db_entities
+		db.db_entities.clear();
+		for (const id in entityListJson) {
+			console.log("id", id);
+			if(entityListJson[id]) {
+				let entity = entityListJson[id];
+				db.db_entities.put({id: entity["entity_id"], idno: entity["idno"], label: entity["displayname"], data: {displayname: entity["displayname"]}});
+			}
+		}
+
+		// remove all content from db.db_storage_locations
+		db.db_storage_locations.clear();
+		for (const id in storageLocationListJson) {
+			console.log("id", id);
+			if(storageLocationListJson[id]) {
+				let storageLocation = storageLocationListJson[id];
+				db.db_storage_locations.put({id: storageLocation["location_id"], idno: storageLocation["idno"], label: storageLocation["name"], data: {name: storageLocation["name"], parent_id: storageLocation["parent_id"]}});
+			}
+		}
 
     });
 </script>
