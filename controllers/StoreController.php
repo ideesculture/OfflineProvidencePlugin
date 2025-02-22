@@ -147,6 +147,10 @@ class StoreController extends ActionController
 		exit();
 	}
 
+	public function SyncView() {
+		return $this->render("sync_html.php");
+	}
+
 	public function Import() {
 		require __DIR__ . '/../vendor/autoload.php';
 		error_reporting(E_ERROR);

@@ -8,7 +8,9 @@ ini_set('display_errors', 1);
 <div id="results"></div>
 <script src='<?= __CA_URL_ROOT__ ?>/assets/jquery/jquery.js' type='text/javascript'></script>
 <script src="<?= __CA_URL_ROOT__ ?>/app/plugins/OfflineProvidence/assets/dexie.js"></script>
-
+<form target="_top" id="globalModificationsForm" style="position: absolute;left:-1000;top:-100;heigh:1px;width:1px" action="<?= __CA_URL_ROOT__ ?>/index.php/OfflineProvidence/Store/Syncview" method="post">
+	<textarea id="globalModificationsTextarea" type="hidden" name="globalModifications"></textarea>
+</form>
 <!-- require DeepDiff -->
 <script src="<?= __CA_URL_ROOT__ ?>/app/plugins/OfflineProvidence/assets/deep-diff.min.js"></script>
 <style>
@@ -52,7 +54,7 @@ ini_set('display_errors', 1);
 		if(obj.edit) {
 			// check if there is a corresponding _edit field
 			if(obj._edit) {
-				let modifications = DeepDiff(obj.edit, obj._edit);
+				let modifications = DeepDiff(obj._edit, obj.edit);
 
 				if(modifications) {
 					globalModifications[obj.id] = [];
@@ -65,6 +67,7 @@ ini_set('display_errors', 1);
 							console.log("Array", modifications[key].item);
 							globalModifications[obj.id].push({kind:"A"+modifications[key].item.kind, path:modifications[key].path.join(".")+"."+modifications[key].index, lhs:"", rhs:JSON.stringify(modifications[key].item.rhs)});
 						} else {
+							console.log("modifications : ", modifications[key]);
 							globalModifications[obj.id].push({kind:modifications[key].kind, path:modifications[key].path.join("."), lhs:modifications[key].lhs, rhs:modifications[key].rhs});
 						}
 						
@@ -87,8 +90,13 @@ ini_set('display_errors', 1);
 		let count = Object.keys(globalModifications).length;
 		if(count >0) {
 			// display modifications
-			$("#results").html(count + " objets modifiés<br/>Vous devez regénérer le cache.");
-
+			//$("#results").html(count + " objets modifiés<br/>Vous devez regénérer le cache.");
+			$("#results").html(count + " objets modifiés<br/><br/><button id='launchsync' style='padding:5px'>Synchroniser</button>");
+			$("#globalModificationsTextarea").val(JSON.stringify(globalModifications));
+			console.log(globalModifications);
+			$("#launchsync").click(function() {
+				$("#globalModificationsForm").submit();
+			});
 		} else {
 			$("#results").html("Aucune modification");
 		}

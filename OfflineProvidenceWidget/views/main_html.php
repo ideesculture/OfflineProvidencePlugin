@@ -33,6 +33,7 @@
 <div id="cache_creation">
 	Création du cache<br/>
 	<button id="CreerLeCache" onclick="CreerLeCache()">Créer le cache</button>
+	<iframe id="cache_creation_iframe" style="height:auto;width:100%;border:none;"></iframe>
 </div>
 <div id="synchro" style="margin-top:8px">
 	Synchronisation du mode offline<br/>
@@ -57,11 +58,12 @@
 			$("#CreerLeCache").hide();
 			$("#synchro").hide();
 			$('#cache_creation').append("<img src='<?= __CA_URL_ROOT__ ?>/app/plugins/OfflineProvidence/assets/loading-spinning.gif'>");
-			//$('#cache_creation_iframe').attr('src', $('#cache_creation_iframe').attr('loading'));
+			$('#cache_creation_iframe').attr('src', "<?= __CA_URL_ROOT__ ?>/index.php/OfflineProvidence/Store/PopulateFromParent/parent_id/<?= $fabrique_id ?>");
 			$.ajax({
 				url: "<?= __CA_URL_ROOT__ ?>/index.php/OfflineProvidence/Store/PopulateFromParent/parent_id/<?= $fabrique_id ?>",
 				success: function(data) {
 					$('#cache_creation').find("img").remove();
+					$("#cache_creation_log").load(data);
 					alert("Le cache a été créé avec succès.");
 					$("#synchro").show();
 				}
