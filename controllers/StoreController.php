@@ -99,11 +99,14 @@ class StoreController extends ActionController
 
 	public function PopulateFromParent() {
 		$parent_id = $this->getRequest()->getParameter("parent_id", pInteger);
+		if(!$parent_id) {
+			print "Error : No parent_id provided";
+			exit();
+		}
 		$o_data = new Db();
 
 		// Children
-		$query = "SELECT co.object_id as id, co.type_id as type_id, children.object_id as child_id, children.type_id as child_type_id
-		FROM ca_objects co LEFT JOIN ca_objects children ON children.parent_id=co.object_id WHERE co.parent_id = ".$parent_id." AND co.deleted = 0";
+		$query = "SELECT co.object_id as id, co.type_id as type_id, children.object_id as child_id, children.type_id as child_type_id FROM ca_objects co LEFT JOIN ca_objects children ON children.parent_id=co.object_id WHERE co.parent_id = ".$parent_id." AND co.deleted = 0";
 		$qr_res = $o_data->query($query);
 		$results = $qr_res->getAllRows();
 		$fileList = [];
@@ -137,7 +140,29 @@ class StoreController extends ActionController
 			$fileList["repr_"+$representation["representation_id"]] = $filename_repr;
 		}
 		$this->view->setVar("fileList", $fileList);
+
+		// Entities
+		$query = "SELECT cae.entity_id, cae.idno, cael.displayname from ca_entities cae left join ca_entity_labels cael on cae.entity_id=cael.entity_id AND deleted = 0";
+		$qr_res = $o_data->query($query);
+		$results = $qr_res->getAllRows();
+		$entityList = [];
+		foreach($results as $key=>$value) {
+			$entityList[$key] = $value;
+		}
+		$this->view->setVar("entityList", $entityList);
 		
+		// Storage locations
+		$query = "SELECT ca_storage_locations.location_id, idno, name, parent_id FROM ca_storage_locations left join ca_storage_location_labels on ca_storage_locations.location_id=ca_storage_location_labels.location_id AND deleted = 0";
+		$qr_res = $o_data->query($query);
+		$results = $qr_res->getAllRows();
+		$storageLocationList = [];
+		foreach($results as $key=>$value) {
+			if($value["name"] && $value["name"] != null && $value["parent_id"]) {
+				$storageLocationList[$key] = $value;
+			}
+		}
+		$this->view->setVar("storageLocationList", $storageLocationList);
+
 		print $this->render("store_populate_html.php");
 		exit();
 	}
