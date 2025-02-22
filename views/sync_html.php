@@ -1,6 +1,16 @@
 <?php
+/*
+	CollectiveAccess Offline mode for Providence
+	Gautier Michelin, 2025
+
+	GNU GPL v3
+
+	Offline mode for CollectiveAccess Providence, using Dexie.js and DeepDiff.js ; sync view
+*/
+
 error_reporting(E_ERROR);
 ini_set('display_errors', 1);
+
 require_once(__CA_MODELS_DIR__."/ca_objects.php");
 
 

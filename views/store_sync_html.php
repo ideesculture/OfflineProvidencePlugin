@@ -1,6 +1,16 @@
 <?php
+/*
+	CollectiveAccess Offline mode for Providence
+	Gautier Michelin, 2025
+
+	GNU GPL v3
+
+	Offline mode for CollectiveAccess Providence, using Dexie.js and DeepDiff.js ; sync view
+*/
+
 error_reporting(E_ERROR);
 ini_set('display_errors', 1);
+
 ?>
 <div id="progression_container" style="width:100%;background:white;">
 	<div id="progression" style="width:0%;background:#5cb4c8;height:10px"></div>
